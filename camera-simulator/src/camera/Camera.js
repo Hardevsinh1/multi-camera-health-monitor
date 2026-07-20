@@ -20,6 +20,18 @@ class Camera {
         this.lastHeartbeat = null;
     }
 
+    // getHealthData() {
+    //     return {
+    //         cameraId: this.cameraId,
+    //         cpu: this.cpu,
+    //         memory: this.memory,
+    //         storageUsed: this.storageUsed,
+    //         storageCapacity: this.storageCapacity,
+    //         latency: this.latency,
+    //         heartbeat: this.lastHeartbeat,
+    //     };
+    // }
+
     getHealthData() {
         return {
             cameraId: this.cameraId,
@@ -29,6 +41,7 @@ class Camera {
             storageCapacity: this.storageCapacity,
             latency: this.latency,
             heartbeat: this.lastHeartbeat,
+            online: this.online,
         };
     }
 
@@ -51,10 +64,11 @@ class Camera {
         this.lastHeartbeat = new Date();
     }
 
-    // update matrics heartbeat 
+    // update matrics heartbeat return health data
     tick() {
         this.updateMetrics();
         this.updateHeartbeat();
+        return this.getHealthData();
     }
 }
 

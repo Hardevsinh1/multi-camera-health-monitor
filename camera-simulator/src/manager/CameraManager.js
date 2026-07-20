@@ -37,12 +37,19 @@ class CameraManager {
 
     updateAllCameras() {
 
+        // this.cameras.forEach(camera => {
+    
+        //     camera.tick();
+    
+        // });
+    
         this.cameras.forEach(camera => {
-    
-            camera.tick();
-    
+
+            const healthData = camera.tick();
+        
+            console.log(healthData);
+        
         });
-    
     }
 }
 
