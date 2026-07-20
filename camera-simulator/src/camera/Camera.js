@@ -8,12 +8,12 @@ class Camera {
         // Runtime State
         this.online = true;
 
-        this.cpu = 0;
-        this.memory = 0;
-        this.storageUsed = 0;
+        this.cpu = 25;
+        this.memory = 40;
+        this.storageUsed = 50;
         this.storageCapacity = 256;
 
-        this.latency = 0;
+        this.latency = 15;
 
         this.lastHeartbeat = null;
     }
