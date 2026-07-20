@@ -34,6 +34,16 @@ class CameraManager {
     getAllCameras() {
         return this.cameras;
     }
+
+    updateAllCameras() {
+
+        this.cameras.forEach(camera => {
+    
+            camera.tick();
+    
+        });
+    
+    }
 }
 
 export default CameraManager;

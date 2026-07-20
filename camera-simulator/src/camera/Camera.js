@@ -1,3 +1,5 @@
+import MetricsGenerator from "../metrics/MetricsGenerator.js";
+
 class Camera {
     constructor({ cameraId, name, location }) {
         // Identity
@@ -18,8 +20,41 @@ class Camera {
         this.lastHeartbeat = null;
     }
 
+    getHealthData() {
+        return {
+            cameraId: this.cameraId,
+            cpu: this.cpu,
+            memory: this.memory,
+            storageUsed: this.storageUsed,
+            storageCapacity: this.storageCapacity,
+            latency: this.latency,
+            heartbeat: this.lastHeartbeat,
+        };
+    }
+
+    updateMetrics() {
+        const metrics = MetricsGenerator.generate({
+            cpu: this.cpu,
+            memory: this.memory,
+            storageUsed: this.storageUsed,
+            storageCapacity: this.storageCapacity,
+            latency: this.latency,
+        });
+
+        this.cpu = metrics.cpu;
+        this.memory = metrics.memory;
+        this.storageUsed = metrics.storageUsed;
+        this.latency = metrics.latency;
+    }
+
     updateHeartbeat() {
         this.lastHeartbeat = new Date();
+    }
+
+    // update matrics heartbeat 
+    tick() {
+        this.updateMetrics();
+        this.updateHeartbeat();
     }
 }
 
