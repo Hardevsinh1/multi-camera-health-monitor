@@ -1,4 +1,5 @@
 import config from "../config/config.js";
+import faultDefinitions from "./faultDefinitions.js";
 
 class FaultEngine {
     constructor() {
@@ -8,37 +9,44 @@ class FaultEngine {
 
     apply(metrics) {
 
-        // No active fault
+        // Maybe start a fault
         if (!this.currentFault) {
-
-            // Randomly start HIGH_CPU fault
+    
             if (Math.random() < config.faultProbability) {
-
-                this.currentFault = "HIGH_CPU";
-
-                // Fault lasts between 5 and 10 cycles
+    
+                const faults = Object.keys(faultDefinitions);
+    
+                this.currentFault =
+                    faults[Math.floor(Math.random() * faults.length)];
+    
                 this.remainingCycles =
                     Math.floor(Math.random() * 6) + 5;
             }
-
-            // return metrics;
+    
         }
-
-        // Apply active fault
-        if (this.currentFault === "HIGH_CPU") {
-
-            // 95–100%
-            metrics.cpu = 95 + Math.random() * 5;
-
-            this.remainingCycles--;
-
-            if (this.remainingCycles <= 0) {
-                metrics.cpu = 20 + Math.random() * 10;
-                this.currentFault = null;
-            }
+    
+        // No fault selected
+        if (!this.currentFault) {
+            return metrics;
         }
-
+    
+        const definition =
+            faultDefinitions[this.currentFault];
+    
+        definition.apply(metrics);
+    
+        this.remainingCycles--;
+    
+        if (this.remainingCycles <= 0) {
+    
+            definition.recover(metrics);
+    
+            this.currentFault = null;
+    
+        }
+    
         return metrics;
+    
     }
 }
 

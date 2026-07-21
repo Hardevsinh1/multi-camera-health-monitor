@@ -16,6 +16,25 @@ const config = Object.freeze({
 
     faultProbability:
         Number(process.env.FAULT_PROBABILITY) || 0.03,
+        
+    healthyRanges: {
+
+        cpu: {
+            min: 20,
+            max: 30
+        },
+
+        memory: {
+            min: 35,
+            max: 45
+        },
+
+        latency: {
+            min: 10,
+            max: 20
+        }
+
+    }
 });
 
 // Export configuration
