@@ -10,10 +10,20 @@ class AlertService {
 
     async checkHighCpu(healthData) {
 
-        if (healthData.cpu <= 85) {
-            return;
+        if (healthData.cpu > 85) {
+    
+            await this.createHighCpuAlert(healthData);
+    
+        } else {
+    
+            await this.resolveHighCpuAlert(healthData);
+    
         }
     
+    }
+
+    async createHighCpuAlert(healthData) {
+
         const existingAlert = await Alert.findOne({
     
             cameraId: healthData.cameraId,
@@ -46,6 +56,33 @@ class AlertService {
     
     }
 
+    async resolveHighCpuAlert(healthData) {
+
+        const activeAlert = await Alert.findOne({
+    
+            cameraId: healthData.cameraId,
+    
+            faultType: "HIGH_CPU",
+    
+            status: "ACTIVE"
+    
+        });
+    
+        if (!activeAlert) {
+            return;
+        }
+    
+        activeAlert.status = "RESOLVED";
+    
+        activeAlert.resolvedAt = new Date();
+    
+        await activeAlert.save();
+    
+        console.log(
+            `✅ HIGH_CPU alert resolved for ${healthData.cameraId}`
+        );
+    
+    }
 }
 // await this.checkHighMemory(healthData);
 

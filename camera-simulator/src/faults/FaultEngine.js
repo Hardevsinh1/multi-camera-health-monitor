@@ -33,7 +33,7 @@ class FaultEngine {
             this.remainingCycles--;
 
             if (this.remainingCycles <= 0) {
-
+                metrics.cpu = 20 + Math.random() * 10;
                 this.currentFault = null;
             }
         }
