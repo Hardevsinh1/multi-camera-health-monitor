@@ -1,6 +1,8 @@
 import express from "express";
 import cors from "cors";
 import ApiResponse from "./utils/ApiResponse.js"
+import healthRoutes from "./routes/health.routes.js";
+import errorMiddleware from "./middleware/error.middleware.js";
 
 const app = express();
 
@@ -18,5 +20,9 @@ app.get("/", (req, res) => {
     
     );
 });
+
+app.use("/api/health", healthRoutes);
+
+app.use(errorMiddleware);
 
 export default app;

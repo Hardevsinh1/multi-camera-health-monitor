@@ -19,6 +19,7 @@ class Camera {
         this.latency = 15;
 
         this.lastHeartbeat = null;
+        this.faultType = null;
 
         this.faultEngine = new FaultEngine();
     }
@@ -35,17 +36,47 @@ class Camera {
     //     };
     // }
 
+    // getHealthData() {
+    //     return {
+    //         cameraId: this.cameraId,
+    //         cpu: this.cpu,
+    //         memory: this.memory,
+    //         storageUsed: this.storageUsed,
+    //         storageCapacity: this.storageCapacity,
+    //         latency: this.latency,
+    //         heartbeat: this.lastHeartbeat,
+    //         online: this.online,
+    //     };
+    // }
+
     getHealthData() {
+
         return {
+    
             cameraId: this.cameraId,
-            cpu: this.cpu,
-            memory: this.memory,
-            storageUsed: this.storageUsed,
-            storageCapacity: this.storageCapacity,
-            latency: this.latency,
-            heartbeat: this.lastHeartbeat,
+    
+            name: this.name,
+    
+            location: this.location,
+    
             online: this.online,
+    
+            cpu: Number(this.cpu.toFixed(2)),
+    
+            memory: Number(this.memory.toFixed(2)),
+    
+            storageUsed: Number(this.storageUsed.toFixed(2)),
+    
+            storageCapacity: this.storageCapacity,
+    
+            latency: Number(this.latency.toFixed(2)),
+    
+            heartbeat: this.lastHeartbeat,
+    
+            faultType: this.faultEngine.currentFault
+    
         };
+    
     }
 
     updateMetrics() {

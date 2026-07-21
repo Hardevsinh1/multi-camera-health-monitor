@@ -1,5 +1,6 @@
 import Camera from "../camera/Camera.js";
 import config from "../config/config.js";
+import Sender from "../services/Sender.js";
 
 class CameraManager {
     constructor() {
@@ -56,26 +57,18 @@ class CameraManager {
 
         console.log("\nSimulator Started...\n");
     
-        setInterval(() => {
+        setInterval(async () => {
     
             console.clear();
     
             console.log("========== Camera Health ==========\n");
-    
-            this.cameras.forEach(camera => {
-    
-                const healthData = camera.tick();
-    
-                console.log(
-                    `${healthData.cameraId} | ` +
-                    `CPU: ${healthData.cpu.toFixed(1)}% | ` +
-                    `MEM: ${healthData.memory.toFixed(1)}% | ` +
-                    `Storage: ${healthData.storageUsed.toFixed(2)}GB | ` +
-                    `Latency: ${healthData.latency.toFixed(1)}ms`
-                );
-    
-            });
-    
+
+            for (const camera of this.cameras) {
+
+                await Sender.send(camera.tick());
+            
+            }
+        
         }, config.reportInterval);
     
     }
