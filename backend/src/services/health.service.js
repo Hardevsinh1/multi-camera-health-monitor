@@ -1,24 +1,58 @@
+import CameraHealth from "../models/cameraHealth.model.js";
+import CameraStatus from "../models/cameraStatus.model.js";
+
 class HealthService {
+
+    // async processHealthData(healthData) {
+
+    //     const payload = {
+    //         ...healthData,
+    //         // camera may have wrong time
+    //         heartbeat: new Date()
+    //     };
+    //     return await CameraHealth.create(payload);
+
+    // }
 
     async processHealthData(healthData) {
 
-        console.log("\n========== Health Report ==========");
-        console.log(healthData);
+        const payload = {
+            ...healthData,
+            heartbeat: new Date()
+        };
+        
 
-        return healthData;
-
-        // 1. Save health log
-
-        // 2. Update latest camera status
-
-        // 3. Check alert rules
-
-        // 4. Create/resolve alerts
-
-        // 5. Notify frontend
-
-        // 6. Return summary
-
+        // 1. Save history
+        const savedHealth =
+            await CameraHealth.create(payload);
+    
+        // 2. Update latest status
+        const currentStatus = await CameraStatus.findOneAndUpdate(
+    
+            {
+                cameraId: payload.cameraId
+            },
+    
+            {
+                $set: {
+                    ...payload,
+                    lastHeartbeat: payload.heartbeat
+                }
+    
+            },
+    
+            {
+                upsert: true,
+                returnDocument: "after"
+            }
+    
+        );
+    
+        return {
+            history: savedHealth,
+            currentStatus
+        };
+    
     }
 
 }
