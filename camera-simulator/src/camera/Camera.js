@@ -1,4 +1,5 @@
 import MetricsGenerator from "../metrics/MetricsGenerator.js";
+import FaultEngine from "../faults/FaultEngine.js";
 
 class Camera {
     constructor({ cameraId, name, location }) {
@@ -18,6 +19,8 @@ class Camera {
         this.latency = 15;
 
         this.lastHeartbeat = null;
+
+        this.faultEngine = new FaultEngine();
     }
 
     // getHealthData() {
@@ -54,10 +57,12 @@ class Camera {
             latency: this.latency,
         });
 
-        this.cpu = metrics.cpu;
-        this.memory = metrics.memory;
-        this.storageUsed = metrics.storageUsed;
-        this.latency = metrics.latency;
+        const finalMetrics = this.faultEngine.apply(metrics);
+
+        this.cpu = finalMetrics.cpu;
+        this.memory = finalMetrics.memory;
+        this.storageUsed = finalMetrics.storageUsed;
+        this.latency = finalMetrics.latency;
     }
 
     updateHeartbeat() {

@@ -51,6 +51,34 @@ class CameraManager {
         
         });
     }
+
+    startSimulation() {
+
+        console.log("\nSimulator Started...\n");
+    
+        setInterval(() => {
+    
+            console.clear();
+    
+            console.log("========== Camera Health ==========\n");
+    
+            this.cameras.forEach(camera => {
+    
+                const healthData = camera.tick();
+    
+                console.log(
+                    `${healthData.cameraId} | ` +
+                    `CPU: ${healthData.cpu.toFixed(1)}% | ` +
+                    `MEM: ${healthData.memory.toFixed(1)}% | ` +
+                    `Storage: ${healthData.storageUsed.toFixed(2)}GB | ` +
+                    `Latency: ${healthData.latency.toFixed(1)}ms`
+                );
+    
+            });
+    
+        }, config.reportInterval);
+    
+    }
 }
 
 export default CameraManager;

@@ -57,24 +57,30 @@ import MetricsGenerator from "./metrics/MetricsGenerator.js";
 // console.log("\nAfter Update");
 // console.log(camera);
 
-//
+// //
+// const manager = new CameraManager();
+
+// manager.initializeCameras();
+
+// setInterval(() => {
+//     manager.updateAllCameras();
+
+//     console.clear();
+
+//     manager.getAllCameras().forEach((camera) => {
+//         console.log(
+//             `${camera.cameraId}
+//             CPU:${camera.cpu.toFixed(1)}%
+//             Memory:${camera.memory.toFixed(1)}%
+//             Storage:${camera.storageUsed.toFixed(2)}GB
+//             Latency:${camera.latency.toFixed(1)}ms`
+//         );
+//     });
+// }, config.reportInterval);
+
+
 const manager = new CameraManager();
 
 manager.initializeCameras();
 
-setInterval(() => {
-    manager.updateAllCameras();
-
-    console.clear();
-
-    manager.getAllCameras().forEach((camera) => {
-        console.log(
-            `${camera.cameraId}
-            CPU:${camera.cpu.toFixed(1)}%
-            Memory:${camera.memory.toFixed(1)}%
-            Storage:${camera.storageUsed.toFixed(2)}GB
-            Latency:${camera.latency.toFixed(1)}ms`
-        );
-    });
-}, config.reportInterval);
-
+manager.startSimulation();
