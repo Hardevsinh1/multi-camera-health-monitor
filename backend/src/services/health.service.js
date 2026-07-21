@@ -1,5 +1,6 @@
 import CameraHealth from "../models/cameraHealth.model.js";
 import CameraStatus from "../models/cameraStatus.model.js";
+import alertService from "./alert.service.js";
 
 class HealthService {
 
@@ -47,6 +48,8 @@ class HealthService {
             }
     
         );
+
+        await alertService.processHealthReport(payload);
     
         return {
             history: savedHealth,
