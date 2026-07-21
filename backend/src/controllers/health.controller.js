@@ -1,6 +1,7 @@
 import asyncHandler from "../utils/asyncHandler.js";
 import ApiResponse from "../utils/ApiResponse.js";
 import ApiError from "../utils/ApiError.js";
+import healthService from "../services/health.service.js";
 
 class HealthController {
 
@@ -8,26 +9,23 @@ class HealthController {
 
         const healthData = req.body;
 
-        // Basic validation
         if (!healthData.cameraId) {
-            throw new ApiError(
-                400,
-                "Camera ID is required"
-            );
+            throw new ApiError(400, "Camera ID is required");
         }
 
-        console.log("\nReceived Health Data");
-        console.log(healthData);
-
-        return res
-            .status(200)
-            .json(
-                new ApiResponse(
-                    200,
-                    healthData,
-                    "Health data received successfully"
-                )
+        const result =
+            await healthService.processHealthData(
+                healthData
             );
+
+        return res.status(200).json(
+            new ApiResponse(
+                200,
+                result,
+                "Health data processed successfully"
+            )
+        );
+
     });
 
 }

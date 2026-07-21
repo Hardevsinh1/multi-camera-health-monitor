@@ -4,7 +4,8 @@ dotenv.config();
 
 const config = {
     port: process.env.PORT || 4000,
-    nodeEnv: process.env.NODE_ENV || "development"
+    nodeEnv: process.env.NODE_ENV || "development",
+    mongoUri: process.env.MONGODB_URI
 };
 
 export default config;
